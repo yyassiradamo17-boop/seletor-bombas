@@ -1,0 +1,12 @@
+# catálogos de fabricantes e bibliografia (direitos de autor; ficam só no disco)
+catálogo/
+Referências/
+*.pdf
+
+# ficheiros temporários
+__pycache__/
+*.pyc
+*.bak
+main.js
+main_sa.js
+extracao/Seletor de Bombas.html
