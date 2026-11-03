@@ -2,9 +2,11 @@
 
 Ferramenta para selecionar bombas hidráulicas a partir dos catálogos dos fabricantes. A partir dos dados do sistema, calcula a curva do sistema, cruza-a com cada bomba, verifica o NPSH e prepara a memória de cálculo e o comparativo entre bombas.
 
+**Abrir a app online:** https://yyassiradamo17-boop.github.io/seletor-bombas/
+
 ## Como usar
 
-Abra `Seletor de Bombas.html` num navegador (Chrome, Edge ou Firefox). É um só ficheiro, funciona sem internet e não precisa de instalação.
+Abra o endereço acima, ou descarregue `Seletor de Bombas.html` e abra-o num navegador (Chrome, Edge ou Firefox). É um só ficheiro, funciona sem internet e não precisa de instalação.
 
 1. Defina o sistema no painel esquerdo: caudal, cotas, condutas (com catálogo de tubos PEAD, PVC-U, FFD, aço, PRFV e betão), poço e outros dados.
 2. Na aba **Catálogo**, importe os catálogos de bombas em PDF. As tabelas Q–H com texto são lidas automaticamente; as curvas desenhadas digitalizam-se com cliques. Também pode introduzir fichas próprias à mão.
