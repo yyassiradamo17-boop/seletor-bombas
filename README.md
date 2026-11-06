@@ -11,6 +11,7 @@ Abra o endereço acima, ou descarregue `Seletor de Bombas.html` e abra-o num nav
 1. Defina o sistema no painel esquerdo: caudal, cotas, condutas (com catálogo de tubos PEAD, PVC-U, FFD, aço, PRFV e betão), poço e outros dados.
 2. Na aba **Catálogo**, importe os catálogos de bombas em PDF. As tabelas Q–H com texto são lidas automaticamente; as curvas desenhadas digitalizam-se com cliques. Também pode introduzir fichas próprias à mão.
 3. Use as abas **Seleção**, **Ponto de funcionamento**, **Comparador** e **Memória de cálculo**. A memória exporta-se para .docx ou PDF.
+4. Na aba **Catálogo**, use **Exportar para EPANET** para obter uma rede .inp pronta a correr, curvas .crv ou a secção [CURVES].
 
 Os catálogos importados ficam só na sessão. O projeto pode guardar-se e abrir-se como ficheiro .json.
 
@@ -23,6 +24,7 @@ Os catálogos importados ficam só na sessão. O projeto pode guardar-se e abrir
 | `extracao/seletor-bombas.html` | a fonte da app (versão para claude.ai) |
 | `extracao/standalone.py` | gera a app autónoma a partir da fonte (`python extracao/standalone.py` cria `extracao/Seletor de Bombas.html`, que depois se copia para a raiz) |
 | `extracao/tubos.py`, `tubos.json` | catálogo de tubos usado nas condutas |
+| `extracao/patch_epanet.*` | exportação para o EPANET, aplicada à fonte da app |
 | `extracao/*.py` | scripts de extração de curvas e de alteração da app |
 | `extracao/libs/`, `extracao/fonts/` | pdf.js, JSZip, html2canvas, jsPDF e as fontes IBM Plex e Barlow Condensed (licenças livres próprias) |
 

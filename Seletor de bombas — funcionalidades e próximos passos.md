@@ -1,6 +1,6 @@
 # Seletor de bombas — funcionalidades e próximos passos
 
-Estado em 02/11/2026 · versão 12 (o utilizador importa os catálogos de bombas em PDF; sem curvas embutidas nem catálogo de exemplo; v11: catálogo de tubos; web app autónoma `Seletor de Bombas.html`; v10: Grundfos NB/NK e SP; v9: comparar até 5 bombas; v8: η do rotor aparado; v7: poço de bombagem; v6: golpe de aríete; v5: bombas de reserva; v4: cenários de nível; v3: exportação .docx/PDF, fichas partilhadas, η estimado por Gülich)
+Estado em 06/11/2026 · versão 14 (exportação para o EPANET; v12: o utilizador importa os catálogos de bombas em PDF; sem curvas embutidas nem catálogo de exemplo; v11: catálogo de tubos; web app autónoma `Seletor de Bombas.html`; v10: Grundfos NB/NK e SP; v9: comparar até 5 bombas; v8: η do rotor aparado; v7: poço de bombagem; v6: golpe de aríete; v5: bombas de reserva; v4: cenários de nível; v3: exportação .docx/PDF, fichas partilhadas, η estimado por Gülich)
 
 Artefacto: https://claude.ai/artifact/UFLBANfUyT7KRLMH65j1dT
 
@@ -185,6 +185,37 @@ Exportação (memória de cálculo e memória justificativa):
 - **Ficha própria**: introduzida à mão (Q, H, η, NPSHr) ou vinda da digitalização; aparece como "Fichas próprias" na lista.
 - Cada catálogo carregado é uma família nos filtros da Seleção e do Catálogo. A memória de cálculo indica a fonte como "nome do ficheiro, pág. N".
 - **Nada fica guardado:** os catálogos e as fichas valem só para a sessão; ao recarregar a página é preciso importá-los de novo. O projeto (dados do sistema, pesos, preços) continua guardado no navegador e no .json do projeto. Saiu a partilha de fichas pela base de dados do artefacto.
+
+## 7b. Exportar para o EPANET (v14)
+
+Painel **Exportar para EPANET** na aba Catálogo. Unidades de caudal: LPS, CMH, LPM, CMD e MLD (altura sempre em m). Três ficheiros:
+
+| Ficheiro | Para quê | Como usar no EPANET |
+|---|---|---|
+| Rede pronta a correr (.inp) | Bomba A com as condutas, os níveis, os grupos em paralelo e série, a velocidade e a curva de rendimento do sistema definido | File > Open e Run |
+| Curvas para o Curve Editor (.crv, em .zip) | Bombas escolhidas (A a E) ou todas as da tabela, numa rede que já existe | Data > Curves > Add, botão Load, um ficheiro de cada vez |
+| Secção [CURVES] (.inp) | As mesmas bombas, de uma só vez | Colar a secção no .inp da rede e voltar a abri-lo |
+
+- File > Import > Network **substitui** a rede, não junta curvas (confirmado no código do EPANET); por isso há as opções .crv e [CURVES].
+- A rede tem de usar a mesma unidade de caudal do ficheiro exportado.
+- O EPANET recusa curvas em que H não desce sempre (Error 227). O troço à esquerda do pico sobe até ao pico e a app indica quantas curvas mudaram e em quantos metros. O resto da curva não muda.
+- Abaixo do primeiro ponto (curvas sem Q = 0) e acima do último, o EPANET extrapola. A app avisa das curvas sem Q = 0.
+- Uma curva com 3 pontos que comece em Q = 0 é ajustada pelo EPANET a uma função de potência.
+- O NPSH não é exportado: o EPANET não o usa. O rendimento estimado (Gülich) fica assinalado no comentário da curva.
+- A rede usa os níveis do caso de projeto (aspiração mínima, descarga máxima); as bombas de reserva não entram.
+- IDs: H_modelo e E_modelo, até 31 carateres, sem espaços nem acentos (Ø passa a D).
+
+Validação no motor EPANET 2.2 (via WNTR), com uma ficha de teste com pico:
+
+| Caso | Seletor | EPANET |
+|---|---|---|
+| Darcy-Weisbach, LPS | 17,65 l/s · 41,82 m | 17,66 l/s · 41,80 m |
+| Darcy-Weisbach, CMH | 63,53 m³/h | 63,59 m³/h |
+| Hazen-Williams | 16,99 l/s · 42,61 m | 16,99 l/s · 42,61 m |
+| 2 em paralelo | 10,92 l/s por bomba · 46,38 m | 10,94 l/s · 46,38 m |
+| Velocidade 90 % | 11,95 l/s · 36,81 m | 11,96 l/s · 36,80 m |
+
+As 513 curvas H e as 513 curvas de rendimento do teste (Speroni e ficha) foram aceites pelo motor, em LPS e CMH. O carregamento do .crv segue o código do Curve Editor, mas não foi testado na interface do EPANET.
 
 ## 7a. Rendimento estimado (bombas sem curva η)
 

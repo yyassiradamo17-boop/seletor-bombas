@@ -1,0 +1,11 @@
+        <section class="panel" style="padding:14px 16px;display:flex;flex-direction:column;gap:10px" aria-label="Exportar para o EPANET">
+          <h2>Exportar para EPANET</h2>
+          <div class="fields">
+            <div class="f full"><label for="e_fmt">Ficheiro</label><select id="e_fmt"><option value="net">Rede pronta a correr (.inp)</option><option value="crv">Curvas para o Curve Editor (.crv, em .zip)</option><option value="inp">Secção [CURVES] (.inp)</option></select></div>
+            <div class="f" id="e_what_f"><label for="e_what">Bombas</label><select id="e_what"><option value="sel">Escolhidas (A a E)</option><option value="tab">Todas as da tabela</option></select></div>
+            <div class="f"><label for="e_u">Caudal em</label><select id="e_u"><option value="LPS">l/s (LPS)</option><option value="CMH">m³/h (CMH)</option><option value="LPM">l/min (LPM)</option><option value="CMD">m³/dia (CMD)</option><option value="MLD">Ml/dia (MLD)</option></select></div>
+          </div>
+          <span class="hint" id="e_hint"></span>
+          <div class="row"><span class="msg" id="e_msg"></span><button class="btn" id="e_go">Exportar</button></div>
+          <span class="hint" id="e_note"></span>
+        </section>

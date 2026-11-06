@@ -3,6 +3,12 @@ catálogo/
 Referências/
 *.pdf
 
+# ficheiros exportados pela app (podem conter dados de catálogos)
+*.inp
+*.crv
+*.zip
+projeto-bombas-*.json
+
 # ficheiros temporários
 __pycache__/
 *.pyc
