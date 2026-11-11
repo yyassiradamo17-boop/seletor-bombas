@@ -1,6 +1,6 @@
 # Seletor de bombas — funcionalidades e próximos passos
 
-Estado em 06/11/2026 · versão 14 (exportação para o EPANET; v12: o utilizador importa os catálogos de bombas em PDF; sem curvas embutidas nem catálogo de exemplo; v11: catálogo de tubos; web app autónoma `Seletor de Bombas.html`; v10: Grundfos NB/NK e SP; v9: comparar até 5 bombas; v8: η do rotor aparado; v7: poço de bombagem; v6: golpe de aríete; v5: bombas de reserva; v4: cenários de nível; v3: exportação .docx/PDF, fichas partilhadas, η estimado por Gülich)
+Estado em 11/11/2026 · versão 15 (fichas técnicas: curvas desenhadas lidas sem cliques; v14: exportação para o EPANET; v12: o utilizador importa os catálogos de bombas em PDF; sem curvas embutidas nem catálogo de exemplo; v11: catálogo de tubos; web app autónoma `Seletor de Bombas.html`; v10: Grundfos NB/NK e SP; v9: comparar até 5 bombas; v8: η do rotor aparado; v7: poço de bombagem; v6: golpe de aríete; v5: bombas de reserva; v4: cenários de nível; v3: exportação .docx/PDF, fichas partilhadas, η estimado por Gülich)
 
 Artefacto: https://claude.ai/artifact/UFLBANfUyT7KRLMH65j1dT
 
@@ -181,7 +181,17 @@ Exportação (memória de cálculo e memória justificativa):
 - No topo da aba Catálogo, a zona **Importar catálogo em PDF** (clicar ou arrastar um ou mais ficheiros) e a lista **Catálogos carregados**, com "digitalizar" e "remover" em cada um e "remover todos".
 - Sem nada carregado não há bombas: a Seleção mostra "Ainda não há bombas" com ligação para a aba Catálogo, e as restantes abas pedem para escolher uma bomba.
 - Leitura automática: todas as páginas do PDF são lidas e cada tabela Q–H em texto dá uma curva por linha de H (com η, NPSHr ou P quando a tabela os tem; conversão de l/min, l/s e gpm; velocidade lida da página). A designação do modelo vem do início da linha (ex.: "KPM 50", "CS 50-200 C") ou do título acima da tabela. Teste: Speroni 2020 (306 pág.) dá 512 curvas em cerca de 3 s.
-- PDF sem tabelas em texto (curvas desenhadas, como Grundfos e KSB) ou digitalizado: "digitalizar" abre o PDF para marcar a curva com cliques (calibrar o eixo Q, o eixo de cada curva H, η, NPSHr ou P, e marcar os pontos); uma imagem largada na zona de importação abre diretamente na digitalização.
+- **Fichas técnicas e páginas de curvas (v15):** quando uma página não tem tabela Q–H mas tem um eixo de caudais, a app lê as curvas desenhadas em vetor, sem cliques:
+  - eixos pelas etiquetas numéricas (progressão aritmética) e pela unidade na mesma linha (m³/h, l/s, gpm);
+  - painéis H, potência, NPSH e η pelo título junto à escala (H / m, P2 / kW, NPSH / m, H [m], P [kW]…); escalas em ft e hp são ignoradas;
+  - curvas: traços unidos pela cor, contínuos em Q, sem a grelha, as linhas de iso-rendimento e as marcações à mão (linhas retas);
+  - diâmetro do rotor pela legenda de cores (KSB EasySelect) ou pela etiqueta junto à curva (catálogos: ø508/A01); P, NPSH e η emparelhados com H pela cor ou pelo caudal final;
+  - modelo ("Pump type …" ou "Etanorm 300-250-510, n = 1450 rpm") e velocidade (1/min, rpm) lidos da página;
+  - cada diâmetro fica como variante do mesmo modelo, por isso o aparo do rotor interpola entre eles;
+  - η calculado a partir da potência (ρgQH/P) quando o gráfico não traz a curva de rendimento.
+- Testado com duas fichas KSB EasySelect e uma página de catálogo KSB Etanorm. No ponto de funcionamento indicado numa das folhas de dados, os valores lidos do gráfico diferem no máximo 0,3 % em H, potência, η e NPSHr; a altura a caudal nulo coincide com a das folhas.
+- Limites: PDF digitalizados ou com as curvas em imagem continuam a precisar de "digitalizar"; gráficos sem etiquetas numéricas nos eixos ou sem unidade de caudal não são lidos.
+- PDF digitalizado ou sem curvas legíveis: "digitalizar" abre o PDF para marcar a curva com cliques (calibrar o eixo Q, o eixo de cada curva H, η, NPSHr ou P, e marcar os pontos); uma imagem largada na zona de importação abre diretamente na digitalização.
 - **Ficha própria**: introduzida à mão (Q, H, η, NPSHr) ou vinda da digitalização; aparece como "Fichas próprias" na lista.
 - Cada catálogo carregado é uma família nos filtros da Seleção e do Catálogo. A memória de cálculo indica a fonte como "nome do ficheiro, pág. N".
 - **Nada fica guardado:** os catálogos e as fichas valem só para a sessão; ao recarregar a página é preciso importá-los de novo. O projeto (dados do sistema, pesos, preços) continua guardado no navegador e no .json do projeto. Saiu a partilha de fichas pela base de dados do artefacto.
@@ -256,6 +266,6 @@ As 513 curvas H e as 513 curvas de rendimento do teste (Speroni e ficha) foram a
 ### Melhorias de uso
 10. ~~Comparar mais de duas bombas (3 a 5).~~ Feito (v9).
 11. Guardar projetos com nome (vários pontos de projeto).
-12. Digitalização mais rápida, com deteção automática da curva por cor ou espessura.
+12. ~~Digitalização mais rápida, com deteção automática da curva por cor ou espessura.~~ Feito para PDF vetoriais (v15); falta para imagens e PDF digitalizados.
 13. Mais catálogos: ~~Grundfos NB/NK e bombas submersíveis de furo (Grundfos SP)~~ feitos (v10); desde a v12 os catálogos são importados pelo utilizador. Só os PDF com tabelas Q–H em texto são lidos automaticamente; para catálogos com curvas desenhadas, ver o ponto 12.
 14. Catálogo de betão (tubos de pressão com alma de aço) para substituir os valores indicativos.
